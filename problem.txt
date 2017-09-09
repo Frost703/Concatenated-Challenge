@@ -1,0 +1,25 @@
+There is a file where every line is a word or concatenated word. First, I need to parse the file and get a collection of Strings.
+The order is not significant, operations will be insert and select (not at index), so I should use LinkedList.
+
+I need to count all concatenated words, so I probably will have to clone this collection and have ~n^2 compare operations.
+While iterating, I should check is this word is concatenated. If it is, I should put it in a separate collection.
+I shall also save 2 longest concatenated words in it.
+
+One string can be concatenated with many different strings, so I should count only unique strings. Set is a good collection for this purposes.
+Also I don't like iterating over already discovered concatenated strings, so I delete them using iterator.
+
+The output - total amount of concatenated words + longest and second longest words are written through log4j logger into console. If needed,
+ logger can be set to output date into a file.
+
+
+To write this solution took 2h 36m of actual work time
+
+
+
+
+Note section.......
+So first I need to find all not-concatenated words...
+then I should take every word from the total list and see...
+1. then I should take every word from non-concatenated...
+2. check if the word that I received has length > 0, then go to 3. Else add word as concatenated
+3. then I should see if list word contains a non-conc word - substring this word or replace and goto 1
