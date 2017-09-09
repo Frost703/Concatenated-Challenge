@@ -25,8 +25,8 @@ public class ConcatenatedChallenge {
         ConcatenatedWords words = processor.processConcatenatedWords(new FileStringsLoader().load());
 
         log.info("Total amount of concatenated words is " + words.getConcatenatedWordsAmount());
-        log.info("Longest concatenated word is '" + words.getLongestConcatenated() + "' with length " + words.getLongestConcatenated().length());
-        log.info("Second longest concatenated word is '" + words.getSecondLongestConcatenated() + "' with length " + words.getSecondLongestConcatenated().length());
+        log.info("Longest concatenated word is '{}' with length {}", words.getLongestConcatenated(), words.getLongestConcatenated().length());
+        log.info("Second longest concatenated word is '{}' with length {}",words.getSecondLongestConcatenated(),words.getSecondLongestConcatenated().length());
 
         LocalTime end = LocalTime.now();
 

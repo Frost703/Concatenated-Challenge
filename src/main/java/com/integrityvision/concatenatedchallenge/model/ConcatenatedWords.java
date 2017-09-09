@@ -6,8 +6,8 @@ import java.util.HashSet;
  * Class that contains all concatenated words and also stores the longest and second longest ones
  */
 public class ConcatenatedWords {
-    private String longestConcatenated;
-    private String secondLongestConcatenated;
+    private String longestConcatenated = "";
+    private String secondLongestConcatenated = "";
 
     private int longestConcatenatedLength;
     private int secondLongestConcatenatedLength;
@@ -30,17 +30,8 @@ public class ConcatenatedWords {
         return secondLongestConcatenatedLength;
     }
 
-    private void setLongestConcatenated(String word, int wordLength){
-        secondLongestConcatenated = longestConcatenated;
-        secondLongestConcatenatedLength = longestConcatenatedLength;
-
-        longestConcatenated = word;
-        longestConcatenatedLength = wordLength;
-    }
-
-    private void setSecondLongestConcatenated(String word, int wordLength){
-        secondLongestConcatenated = word;
-        secondLongestConcatenatedLength = wordLength;
+    public int getConcatenatedWordsAmount(){
+        return concatenatedWords.size();
     }
 
     public void addConcatenatedWord(String word) {
@@ -50,16 +41,25 @@ public class ConcatenatedWords {
             setLongestConcatenated(word, wordLength);
         }
 
-        else if(wordLength > secondLongestConcatenatedLength){
+        else if(wordLength > secondLongestConcatenatedLength && wordLength != longestConcatenatedLength){
             setSecondLongestConcatenated(word, wordLength);
         }
 
         concatenatedWords.add(word);
     }
 
-    public int getConcatenatedWordsAmount(){
-        return concatenatedWords.size();
+    private void setLongestConcatenated(String word, int wordLength){
+        if(wordLength > longestConcatenatedLength) setSecondLongestConcatenated(longestConcatenated, longestConcatenatedLength);
+
+        longestConcatenated = word;
+        longestConcatenatedLength = wordLength;
     }
 
-    //TODO What if there are 2+ longest concatenated word with the same length?
+    private void setSecondLongestConcatenated(String word, int wordLength){
+        if(secondLongestConcatenatedLength != wordLength) {
+
+            secondLongestConcatenated = word;
+            secondLongestConcatenatedLength = wordLength;
+        }
+    }
 }

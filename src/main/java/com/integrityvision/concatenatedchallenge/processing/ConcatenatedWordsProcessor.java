@@ -4,7 +4,6 @@ import com.integrityvision.concatenatedchallenge.model.ConcatenatedWords;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,25 +29,55 @@ public class ConcatenatedWordsProcessor {
 
         ConcatenatedWords concatenatedWords = new ConcatenatedWords();
         LinkedList<String> wordsCopy = new LinkedList<>(words);
+        LinkedList<String> uniqueWords = new LinkedList<>();
 
-        for(String w : words){
+outer:  for(String w : words){
             if(w == null || w.length() < 1) continue;
-            log.debug("Concatenated words length is " + concatenatedWords.getConcatenatedWordsAmount());
 
-            Iterator<String> wordsCopyIterator = wordsCopy.iterator();
-            while(wordsCopyIterator.hasNext()){
-                String wc = wordsCopyIterator.next();
-                if(wc != null && wc.contains(w)) {
-                    if(wc.equals(w)) continue;
+            for(String wc : wordsCopy){
+                if(wc == null || wc.length() < 1 || w.equals(wc)) continue;
 
-                    concatenatedWords.addConcatenatedWord(wc);
-                    wordsCopyIterator.remove();
-
-                    log.debug("Word '" + wc + "' contains '" + w + "'");
+                if(w.contains(wc)) {
+                    continue outer;
                 }
+            }
+
+            uniqueWords.add(w);
+            log.debug("Found unique word '{}'", w);
+        }
+
+        wordsCopy.removeAll(uniqueWords);
+
+        for(String wc : wordsCopy){
+            if(wc == null || wc.length() < 1) continue;
+
+            if(isConcatenated(wc, uniqueWords)) {
+                concatenatedWords.addConcatenatedWord(wc);
+                log.debug("Found concatenated word '{}'", wc);
             }
         }
 
         return concatenatedWords;
     }
+
+    /**
+     * Recursively checks if the word is composed with only unique words
+     *
+     * @param w - String to check
+     * @param uniqueWords - collection of unique words
+     * @return true when the word is fully composed with unique words
+     */
+    private boolean isConcatenated(String w, LinkedList<String> uniqueWords) {
+        if(w.length() == 0) return true;
+
+        for(String s : uniqueWords){
+            if(w.contains(s)) {
+                return isConcatenated(w.replaceAll(s, ""), uniqueWords);
+            }
+        }
+
+        return false;
+    }
+
+
 }
