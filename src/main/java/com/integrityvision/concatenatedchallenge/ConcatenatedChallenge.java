@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Main class. Start the application
@@ -22,9 +23,10 @@ public class ConcatenatedChallenge {
         log.info("Initializing application");
 
         ConcatenatedWordsProcessor processor = new ConcatenatedWordsProcessor();
-        ConcatenatedWords words = processor.processConcatenatedWords(new FileStringsLoader().load());
+        List<String> strings = new FileStringsLoader().load();
+        ConcatenatedWords words = processor.processConcatenatedWords(strings);
 
-        log.info("Total amount of concatenated words is " + words.getConcatenatedWordsAmount());
+        log.info("Total amount of concatenated words is {}",words.getConcatenatedWordsAmount());
         log.info("Longest concatenated word is '{}' with length {}", words.getLongestConcatenated(), words.getLongestConcatenated().length());
         log.info("Second longest concatenated word is '{}' with length {}",words.getSecondLongestConcatenated(),words.getSecondLongestConcatenated().length());
 

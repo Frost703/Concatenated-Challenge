@@ -29,55 +29,47 @@ public class ConcatenatedWordsProcessor {
 
         ConcatenatedWords concatenatedWords = new ConcatenatedWords();
         LinkedList<String> wordsCopy = new LinkedList<>(words);
-        LinkedList<String> uniqueWords = new LinkedList<>();
 
-outer:  for(String w : words){
+        for(String w : words){
             if(w == null || w.length() < 1) continue;
 
-            for(String wc : wordsCopy){
-                if(wc == null || wc.length() < 1 || w.equals(wc)) continue;
-
-                if(w.contains(wc)) {
-                    continue outer;
-                }
+            wordsCopy.remove(w);
+            if(isConcatenated(w, wordsCopy)){
+                concatenatedWords.addConcatenatedWord(w);
             }
+            wordsCopy.add(w);
 
-            uniqueWords.add(w);
-            log.debug("Found unique word '{}'", w);
-        }
-
-        wordsCopy.removeAll(uniqueWords);
-
-        for(String wc : wordsCopy){
-            if(wc == null || wc.length() < 1) continue;
-
-            if(isConcatenated(wc, uniqueWords)) {
-                concatenatedWords.addConcatenatedWord(wc);
-                log.debug("Found concatenated word '{}'", wc);
-            }
+            log.debug("Total amount of concatenated words '{}'", concatenatedWords.getConcatenatedWordsAmount());
         }
 
         return concatenatedWords;
     }
 
     /**
-     * Recursively checks if the word is composed with only unique words
+     * Recursively checks if the word is composed with other words
      *
      * @param w - String to check
-     * @param uniqueWords - collection of unique words
+     * @param words - collection of unique words
      * @return true when the word is fully composed with unique words
      */
-    private boolean isConcatenated(String w, LinkedList<String> uniqueWords) {
-        if(w.length() == 0) return true;
+    private boolean isConcatenated(String w, LinkedList<String> words) {
+        int length = w.length();
+        if (length == 0) return true;
 
-        for(String s : uniqueWords){
-            if(w.contains(s)) {
-                return isConcatenated(w.replaceAll(s, ""), uniqueWords);
+        int start = 0;
+        int end = 1;
+        while (end != length + 1) {
+            if (words.contains(w.substring(start, end))) {
+                if (isConcatenated(w.substring(end, w.length()), words)) {
+                    return true;
+                } else {
+                    end++;
+                }
+            } else {
+                end++;
             }
         }
 
         return false;
     }
-
-
 }

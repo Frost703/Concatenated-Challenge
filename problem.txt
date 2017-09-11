@@ -19,10 +19,12 @@ So I have to find all unique words (not-concatenated). Take a list of all words,
  and recursively go through every word. If potentially concatenated word fully composed with words from
  the list of unique words - then it is concatenated.
 
-It took additional 20 minutes to realize the problem and change a solution.
-The total time of work was 3hours 15minutes
+My problem was - concatenated words can consist of other concatenated words and simple words as well. I didn't take that is count.
+The other thing I realized - I was cutting possibilities. I.E. if I had word aabac, and there is a word aa in list, I looked at word bac ->
+ if it was not concatenated, I considered word aabac not concatenated. But there may be words aab and ac...
 
-So all together there are 9255 of concatenated words.
- The longest is "antiauthoritarianisms" (21 symb) and second longest is "multidimensionalities" (21 symb).
- If we consider only words with different length, then second longest is "antifluoridationist" (19 symb).
- The run took 166 seconds on my machine.
+So, after making all fixed, this is what I got:
+
+    Longest word    - ethylenediaminetetraacetates - 28 symb
+    Second longest  - electroencephalographically  - 27 symb
+    Time to process - 6640 seconds
