@@ -19,7 +19,7 @@ public class ConcatenatedWordsProcessorTest {
         testWords = new LinkedList<>();
         testWords.addAll(Arrays.asList("aa","aah","aahed","aahing","aahs","aal","aalii","aaliis","aals","aardvark"
                 ,"aardvarks","aardwolf","aardwolves","aargh","aarrgh","aarrghh","aas","aasvogel","aasvogels","ab", "ba"
-                ,"aaab","abaaab", "aahaal", "baab",
+                ,"aaab","abaaab", "aahaalba", "baab",
                 null, null, "", ""));
     }
 
@@ -34,7 +34,7 @@ public class ConcatenatedWordsProcessorTest {
         ConcatenatedWords words = processor.processConcatenatedWords(provider);
 
         assertEquals(4, words.getConcatenatedWordsAmount());
-        assertEquals(6, words.getLongestConcatenatedLength());
-        assertEquals(4, words.getSecondLongestConcatenatedLength());
+        assertEquals(8, words.getLongestConcatenatedLength());
+        assertEquals(6, words.getSecondLongestConcatenatedLength());
     }
 }

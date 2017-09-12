@@ -11,8 +11,8 @@ import java.util.HashSet;
 public class ConcatenatedWords {
     private static final Logger log = LoggerFactory.getLogger(ConcatenatedWords.class);
 
-    private String longestConcatenated = "";
-    private String secondLongestConcatenated = "";
+    private String longestConcatenated;
+    private String secondLongestConcatenated;
 
     private int longestConcatenatedLength;
     private int secondLongestConcatenatedLength;
@@ -20,52 +20,68 @@ public class ConcatenatedWords {
     private HashSet<String> concatenatedWords = new HashSet<>();
 
     public String getLongestConcatenated() {
+        if(longestConcatenated == null){
+            getLongestAndSecondLongestConcatenatedWords();
+        }
+
         return longestConcatenated;
     }
 
     public String getSecondLongestConcatenated() {
+        if(secondLongestConcatenated == null){
+            getLongestAndSecondLongestConcatenatedWords();
+        }
+
         return secondLongestConcatenated;
     }
 
     public int getLongestConcatenatedLength() {
+        if(longestConcatenatedLength == 0){
+            getLongestAndSecondLongestConcatenatedWords();
+        }
+
         return longestConcatenatedLength;
     }
 
     public int getSecondLongestConcatenatedLength() {
+        if(secondLongestConcatenatedLength == 0){
+            getLongestAndSecondLongestConcatenatedWords();
+        }
+
         return secondLongestConcatenatedLength;
     }
 
-    public int getConcatenatedWordsAmount(){
+    public int getConcatenatedWordsAmount() {
         return concatenatedWords.size();
     }
 
     public void addConcatenatedWord(String word) {
-        int wordLength = word.length();
-
-        if(wordLength > longestConcatenatedLength){
-            setLongestConcatenated(word, wordLength);
-        }
-
-        else if(wordLength > secondLongestConcatenatedLength && wordLength != longestConcatenatedLength){
-            setSecondLongestConcatenated(word, wordLength);
-        }
-
-        log.debug("Found concatenated word - {}", word);
+        //log.debug("Found concatenated word - {}", word);
         concatenatedWords.add(word);
     }
 
-    private void setLongestConcatenated(String word, int wordLength){
-        if(wordLength > longestConcatenatedLength) setSecondLongestConcatenated(longestConcatenated, longestConcatenatedLength);
+    private void getLongestAndSecondLongestConcatenatedWords(){
+        int longestLength = 0, secondLongestLength = 0;
+        String longest = "", secondLongest = "";
+        for(String c : concatenatedWords){
+            int length = c.length();
+            if(longestLength < length){
+                secondLongestLength = longestLength;
+                secondLongest = longest;
 
-        longestConcatenated = word;
-        longestConcatenatedLength = wordLength;
-    }
-
-    private void setSecondLongestConcatenated(String word, int wordLength){
-        if(secondLongestConcatenatedLength != wordLength) {
-
-            secondLongestConcatenated = word;
-            secondLongestConcatenatedLength = wordLength;
+                longestLength = length;
+                longest = c;
+            }
+            else if(secondLongestLength < length){
+                secondLongestLength = length;
+                secondLongest = c;
+            }
         }
+
+        this.longestConcatenated = longest;
+        this.longestConcatenatedLength = longestLength;
+
+        this.secondLongestConcatenated = secondLongest;
+        this.secondLongestConcatenatedLength = secondLongestLength;
     }
 }
