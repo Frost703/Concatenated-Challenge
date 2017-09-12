@@ -1,6 +1,8 @@
 package com.integrityvision.concatenatedchallenge.processing;
 
+import com.integrityvision.concatenatedchallenge.model.AlphabeticListProvider;
 import com.integrityvision.concatenatedchallenge.model.ConcatenatedWords;
+import com.sun.org.apache.xml.internal.res.XMLErrorResources_tr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +18,12 @@ public class ConcatenatedWordsProcessor {
     /**
      * Finds concatenated words
      *
-     * @param words List of Strings with all words to process
+     * @param provider Alphabetic List Provider with all words to process
      * @exception IllegalArgumentException when provided list of words is empty
      * @return ConcatenatedWords object with all concatenated strings
      */
-    public ConcatenatedWords processConcatenatedWords(List<String> words){
+    public ConcatenatedWords processConcatenatedWords(AlphabeticListProvider provider){
+        List<String> words = provider.getAll();
         if(words.size() < 1) {
             IllegalArgumentException iae = new IllegalArgumentException("List of words can't be empty");
             log.error("Empty list of words", iae);
@@ -28,18 +31,18 @@ public class ConcatenatedWordsProcessor {
         }
 
         ConcatenatedWords concatenatedWords = new ConcatenatedWords();
-        LinkedList<String> wordsCopy = new LinkedList<>(words);
 
         for(String w : words){
             if(w == null || w.length() < 1) continue;
 
-            wordsCopy.remove(w);
-            if(isConcatenated(w, wordsCopy)){
+            List<String> initWords = new LinkedList<>(provider.get(w));
+            initWords.remove(w);
+
+            if(isConcatenated(w, provider, initWords)){
                 concatenatedWords.addConcatenatedWord(w);
             }
-            wordsCopy.add(w);
 
-            log.debug("Total amount of concatenated words '{}'", concatenatedWords.getConcatenatedWordsAmount());
+            initWords.add(w);
         }
 
         return concatenatedWords;
@@ -49,10 +52,10 @@ public class ConcatenatedWordsProcessor {
      * Recursively checks if the word is composed with other words
      *
      * @param w - String to check
-     * @param words - collection of unique words
+     * @param provider - Object with all words grouped by first letter
      * @return true when the word is fully composed with unique words
      */
-    private boolean isConcatenated(String w, LinkedList<String> words) {
+    private boolean isConcatenated(String w, AlphabeticListProvider provider, List<String> words) {
         int length = w.length();
         if (length == 0) return true;
 
@@ -60,7 +63,8 @@ public class ConcatenatedWordsProcessor {
         int end = 1;
         while (end != length + 1) {
             if (words.contains(w.substring(start, end))) {
-                if (isConcatenated(w.substring(end, w.length()), words)) {
+                String nextIteration = w.substring(end, w.length());
+                if (isConcatenated(nextIteration, provider, provider.get(nextIteration))) {
                     return true;
                 } else {
                     end++;

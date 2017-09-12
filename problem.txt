@@ -27,4 +27,5 @@ So, after making all fixed, this is what I got:
 
     Longest word    - ethylenediaminetetraacetates - 28 symb
     Second longest  - electroencephalographically  - 27 symb
-    Time to process - 6640 seconds
+    Total amount    - 97107
+    Time to process - 909 seconds

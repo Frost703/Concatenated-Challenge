@@ -1,5 +1,6 @@
 package com.integrityvision.concatenatedchallenge.input;
 
+import com.integrityvision.concatenatedchallenge.model.AlphabeticListProvider;
 import com.integrityvision.concatenatedchallenge.utilities.PropertiesLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,10 +23,10 @@ public class FileStringsLoader implements StringsLoader {
      * Input file should be located in resources folder of the project
      *
      * @exception RuntimeException if failed to load an input file
-     * @return List of Strings. Each String is a one line of file
+     * @return Alphabetic List Provider. Each String is a one line of file
      */
-    public List<String> load(){
-        LinkedList<String> words = new LinkedList<>();
+    public AlphabeticListProvider load(){
+        AlphabeticListProvider provider = new AlphabeticListProvider();
 
         String file = PropertiesLoader.getProperty("input.properties", "words_file");
         log.info("Loading a {} file", file);
@@ -35,7 +37,7 @@ public class FileStringsLoader implements StringsLoader {
                                             ))){
             String line;
             while((line = reader.readLine()) != null){
-                words.add(line);
+                provider.add(line);
             }
 
         } catch(IOException ioe){
@@ -43,6 +45,6 @@ public class FileStringsLoader implements StringsLoader {
             throw new RuntimeException("Failed to load the input file.", ioe);
         }
 
-        return words;
+        return provider;
     }
 }

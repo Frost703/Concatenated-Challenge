@@ -1,11 +1,16 @@
 package com.integrityvision.concatenatedchallenge.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
 
 /**
  * Class that contains all concatenated words and also stores the longest and second longest ones
  */
 public class ConcatenatedWords {
+    private static final Logger log = LoggerFactory.getLogger(ConcatenatedWords.class);
+
     private String longestConcatenated = "";
     private String secondLongestConcatenated = "";
 
@@ -45,6 +50,7 @@ public class ConcatenatedWords {
             setSecondLongestConcatenated(word, wordLength);
         }
 
+        log.debug("Found concatenated word - {}", word);
         concatenatedWords.add(word);
     }
 

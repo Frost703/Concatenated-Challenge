@@ -1,6 +1,7 @@
 package com.integrityvision.concatenatedchallenge;
 
 import com.integrityvision.concatenatedchallenge.input.FileStringsLoader;
+import com.integrityvision.concatenatedchallenge.model.AlphabeticListProvider;
 import com.integrityvision.concatenatedchallenge.model.ConcatenatedWords;
 import com.integrityvision.concatenatedchallenge.processing.ConcatenatedWordsProcessor;
 import org.slf4j.Logger;
@@ -23,8 +24,11 @@ public class ConcatenatedChallenge {
         log.info("Initializing application");
 
         ConcatenatedWordsProcessor processor = new ConcatenatedWordsProcessor();
-        List<String> strings = new FileStringsLoader().load();
-        ConcatenatedWords words = processor.processConcatenatedWords(strings);
+        AlphabeticListProvider provider = new FileStringsLoader().load();
+
+        log.debug("File loaded in {} seconds", LocalTime.now().toSecondOfDay() - start.toSecondOfDay());
+
+        ConcatenatedWords words = processor.processConcatenatedWords(provider);
 
         log.info("Total amount of concatenated words is {}",words.getConcatenatedWordsAmount());
         log.info("Longest concatenated word is '{}' with length {}", words.getLongestConcatenated(), words.getLongestConcatenated().length());

@@ -1,10 +1,10 @@
 package com.integrityvision.concatenatedchallenge.input;
 
-import java.util.List;
+import com.integrityvision.concatenatedchallenge.model.AlphabeticListProvider;
 
 /**
- * Interface that provides a List of Strings for further processing
+ * Interface that provides a Alphabetic List Provider object for further processing
  */
 public interface StringsLoader {
-    List<String> load();
+    AlphabeticListProvider load();
 }
